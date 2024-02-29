@@ -13,7 +13,7 @@ const deleteList = (btn) => {
 		return res.json();
 	}).then(data => {
 		listElement.parentNode.removeChild(listElement);
-	})
+	});
 };
 
 const shareList = (btn) => {
@@ -77,9 +77,8 @@ const deleteItem = (btn) => {
 			return res.json();
 		})
 		.then(data => {
-			console.log(data);
 			itemElement.parentNode.removeChild(itemElement);
-		})
+		});
 };
 
 async function handleAutocomplete(inp) {

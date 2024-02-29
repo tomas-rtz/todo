@@ -15,26 +15,34 @@ class MainService {
 		this.userModel = new UserModel();
 	}
 
-	async getIndex(userId: ObjectId, next) {
-		let ownLists,
+	async getIndex(userId: ObjectId = null, next) {
+		let lists,
 			sharedLists,
 			user;
 
-		try {
-			user = await this.userModel.getById(userId);	
-		} catch (error) {
-			return next(new Error.Db.GetUserByIdFailed({ originalError: error }));
-		}
-		
+		if(userId) {
+			try {
+				user = await this.userModel.getById(userId);	
+			} catch (error) {
+				return next(new Error.Db.GetUserByIdFailed({ originalError: error }));
+			}
 
-		try {
-			ownLists = await this.listModel.fetchLists({ author: userId });
-			sharedLists = await this.listModel.fetchLists({ sharedWith: user.nick });	
-		} catch (error) {
-			return next(new Error.Db.FetchListsFailed({ originalError: error }));
+			try {
+				lists = await this.listModel.fetchAndPopulateLists({ author: userId });
+				sharedLists = await this.listModel.fetchAndPopulateLists({ sharedWith: user.nick });	
+			} catch (error) {
+				return next(new Error.Db.FetchListsFailed({ originalError: error }));
+			}
+		}  else {
+			try {
+				lists = await this.listModel.fetchAndPopulateLists();
+				sharedLists = null;	
+			} catch (error) {
+				return next(new Error.Db.FetchListsFailed({ originalError: error }));
+			}
 		}
 		
-		return {lists: ownLists, sharedLists: sharedLists};
+		return {lists: lists, sharedLists: sharedLists};
 	}
 }
 

@@ -6,6 +6,7 @@
                     <h1 class="list__title">
                         <%= list.title %>
                     </h1>
+                    <% if (isAuthenticated) { %>
                     <div class="list__actions">
                         <form>
                             <input type="hidden" value="<%= list._id %>" name="listId">
@@ -13,6 +14,7 @@
                             <button class="btn danger" type="button" onclick="deleteList(this)">Delete</button>
                         </form>
                     </div>
+                    <% } %>
                 </header>
         
                 <div class="card__content">
@@ -26,6 +28,7 @@
                 </div>
 
                 <footer class="card__footer">
+                    <% if (isAuthenticated) { %>
                     <div class="list__actions">
                         <div class="autocomplete">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -43,6 +46,8 @@
                         <input class="btn" type="submit" value="Share!" onclick="shareList(this)">
                         <a href="/todo/item/add/<%= list._id %>" class="btn" style="float:right;">Create Task</a>
                     </div>
+                    <% } %>
+
                     <p>
                         deadline: <%= list.deadline ? new Date(list.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '-' %>
                     </p>

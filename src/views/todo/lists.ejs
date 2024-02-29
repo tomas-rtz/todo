@@ -26,14 +26,26 @@
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <button class="btn" type="submit">Add New ToDo List</button>
             </form>
+        <% } else { %>
+            <h3 style="background-color: #00695c;text-align: center;color:white">
+                You have to signup to manage ToDo lists!
+            </h3>
+        <% } %>
             
+        <% if (isAuthenticated) { %>
             <h2>My lists</h2>
-            <%- include('./own-lists.ejs') %>
+        <% } else { %>
+            <h1>ToDo Lists</h1>
+        <% } %>
 
+        <%- include('./own-lists.ejs') %>
+
+
+        <% if (isAuthenticated) { %>
             <h2>Lists shared with me</h2>
             <%- include('./shared-lists.ejs') %>
-        <% } else { %>
-            <h1>Sorry, you have to signup to manage todo lists!</h1>
         <% } %>
+
+ 
     </main>
 <%- include('../includes/end.ejs') %>

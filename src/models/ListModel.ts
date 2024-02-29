@@ -72,7 +72,7 @@ class ListModel {
 		await this.model.findByIdAndUpdate(listId, { $addToSet: { sharedWith: nick } });
 	}
 
-	async fetchLists(filter) {
+	async fetchAndPopulateLists(filter?) {
 		return await this.model.find(filter)
 			.populate('items')
 			.populate('author', 'nick')

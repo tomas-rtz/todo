@@ -4,10 +4,11 @@ import { mainService } from '../services/MainService';
 // FIXME MyRequest make global       
 class MainController {
 	async getIndex(req: MyRequest, res: Response, next: NextFunction): Promise<void> {
-		
-		if(req.user) {
-			const data = await mainService.getIndex(req.user._id, next);
-    
+		const userId = req?.user?._id;
+
+		const data = await mainService.getIndex(userId || null, next);
+
+		if(userId) {
 			res.render('todo/lists', {
 				lists: data.lists,
 				sharedLists: data.sharedLists,
@@ -21,9 +22,11 @@ class MainController {
 				errorMessage: ''
 			});
 		} else {
-			res.render('todo', {
+			res.render('todo/lists', {
+				lists: data.lists,
 				pageTitle: 'ToDo List',
-				path: '/index'
+				path: '/lists',
+				errorMessage: ''
 			});
 		}
     
