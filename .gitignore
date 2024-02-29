@@ -3,3 +3,4 @@ target
 
 ################## JS ##################
 node_modules/
+dist/
