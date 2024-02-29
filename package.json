@@ -1,0 +1,48 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "ToDo list to share with your friends.",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "NODE_ENV='production' node dist/app.js",
+    "dev": "NODE_ENV='development' cp .env ./dist/.env && npx nodemon src/app.ts",
+    "test": "jest --watchAll",
+    "build": "cp .env ./dist/.env && tsc"
+  },
+  "devDependencies": {
+    "@types/connect-flash": "^0.0.40",
+    "@types/connect-mongodb-session": "^2.4.7",
+    "@types/csurf": "^1.11.5",
+    "@types/express": "^4.17.21",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.3",
+    "supertest": "^6.3.4",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@types/express-session": "^1.18.0",
+    "app-root-path": "^3.1.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^2.0.3",
+    "csurf": "^1.9.0",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.16.3",
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.15.6",
+    "express-validator": "^7.0.1",
+    "lodash": "^4.17.21",
+    "mongodb": "^3.1.6",
+    "mongoose": "^5.2.17",
+    "morgan": "^1.10.0",
+    "mysql2": "^1.6.1",
+    "pug": "^3.0.2",
+    "sequelize": " ^6.37.1",
+    "winston": "^3.11.0"
+  }
+}

@@ -1,0 +1,39 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/list.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+   
+    <% if (errorMessage) { %>
+        <div class="user-message user-message--error"><%= errorMessage %></div>
+    <% } %>
+
+    <main>
+        <% if (isAuthenticated) { %>
+            <h1>ToDo List</h1>
+            <form class="add-list-form" action="/todo/list/add" method="POST">
+                <div class="form-control">
+                    <label for="title">Title (required)</label>
+                    <input type="text" name="title" id="title" value="<%= list.title %>">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description"><%= list.description %></textarea>
+                    <label for="deadline">Deadline</label>
+                    <input type="date" name="deadline" id="deadline" value="<%= list.deadline %>">
+                </div>
+
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn" type="submit">Add New ToDo List</button>
+            </form>
+            
+            <h2>My lists</h2>
+            <%- include('./own-lists.ejs') %>
+
+            <h2>Lists shared with me</h2>
+            <%- include('./shared-lists.ejs') %>
+        <% } else { %>
+            <h1>Sorry, you have to signup to manage todo lists!</h1>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>

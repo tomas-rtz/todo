@@ -1,0 +1,13 @@
+.list {
+    width: 100%; 
+    margin: 1rem 0;
+}
+
+.list__title {
+    margin: 0;
+    align-self: flex-start;
+}
+
+.list__actions {
+    align-self: flex-end;
+}

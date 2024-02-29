@@ -1,0 +1,38 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        
+        <form class="login-form" action="/signup" method="POST">
+            <div class="form-control">
+                <label for="nick">Nick</label>
+                <input
+                    class="<%= validationErrors.find(e => e.param === 'nick') ? 'invalid' : '' %>" 
+                    type="text" 
+                    name="nick" 
+                    id="nick"  
+                    minlength="3" 
+                    value="<%= originalInput.nick %>"
+                >
+            </div> 
+            <div class="form-control">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" minlength="4" value="<%= originalInput.password %>">
+            </div>
+            <div class="form-control">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" name="confirmPassword" id="confirmPassword" value="<%= originalInput.confirmPassword %>">
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn" type="submit">Signup</button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

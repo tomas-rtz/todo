@@ -1,0 +1,93 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/list.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+   
+    <% if (errorMessage) { %>
+        <div class="user-message user-message--error"><%= errorMessage %></div>
+    <% } %>
+
+    <main>
+        <% if (isAuthenticated) { %>
+            <h1>ToDo List</h1>
+            <form class="add-list-form" action="/todo/list/add" method="POST">
+                <div class="form-control">
+                    <label for="title">Title (required)</label>
+                    <input type="text" name="title" id="title" value="<%= list.title %>">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description"><%= list.description %></textarea>
+                    <label for="deadline">Deadline</label>
+                    <input type="date" name="deadline" id="deadline" value="<%= list.deadline %>">
+                </div>
+
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn" type="submit">Add New ToDo List</button>
+            </form>
+            
+            <% if (lists.length > 0) { %>
+                <div class="grid">
+                    <% for (let list of lists) { %>
+                        <section class="card list">
+                            <header class="card__header">
+                                <h1 class="list__title">
+                                    <%= list.title %>
+                                </h1>
+                                <div class="list__actions">
+                                    <form>
+                                        <input type="hidden" value="<%= list._id %>" name="listId">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button class="btn danger" type="button" onclick="deleteList(this)">Delete</button>
+                                    </form>
+                                </div>
+                            </header>
+                    
+                            <div class="card__content">
+                                <% if (list.description) { %>
+                                    <p>
+                                        <i><%= list.description %></i>
+                                    </p>
+                                <% } %>
+                                
+                            
+                                <%- include('./list-items.ejs', { list }) %>
+                            </div>
+
+                            <footer class="card__footer">
+                                <div class="list__actions">
+                                        
+                                        <div class="autocomplete" >
+                                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                            <input type="hidden" name="listId" value="<%= list._id %>">
+                                            <input
+                                                autocomplete="off" 
+                                                class="btn-input"
+                                                id="myInput" 
+                                                type="text" 
+                                                name="shareInput" 
+                                                placeholder="search user..." 
+                                                onkeypress="handleAutocomplete(this)"
+                                            >
+                                        </div>
+                                        <input class="btn" type="submit" value="Share!" onclick="shareList(this)">
+
+                                        <a href="/todo/item/add/<%= list._id %>" class="btn" style="float:right;">Create Task</a>
+                                </div>
+                                <p>
+                                    deadline: <%= new Date(list.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); %>
+                                </p>
+                                <p style="text-align: center;">list created by <b><%= list.author.nick %></b></p>
+                            </footer>
+                        </section>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <h1>Add your first ToDo list!</h1>
+            <% } %>        
+        <% } else { %>
+            <h1>Hello World</h1>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>

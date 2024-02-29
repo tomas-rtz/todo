@@ -1,0 +1,64 @@
+<div class="grid">
+    <% if (list.items && list.items.length > 0) { %>
+        <% for (let item of list.items) { %>
+            <article class="card list">
+                <header class="card__header">
+                    <h1 class="list__title" style="<%= getTextColorStyle(item.status) %>">
+                        <%= item.title %>
+                    </h1>
+
+                    <% if (shared === false) { %>
+                        <div class="list__actions">
+                            <form action="/todo/item/set-state" method="POST">
+                                <select name="itemStatus" onchange="this.form.submit()">
+                                    <option value="active" <%= item.status === 'active' ? 'selected' : '' %>>Active</option>
+                                    <option value="done" <%= item.status === 'done' ? 'selected' : '' %>>Done!</option>
+                                    <option value="excluded" <%= item.status === 'excluded' ? 'selected' : '' %>>Excluded</option>
+                                </select>
+
+                                <input type="hidden" value="<%= item._id %>" name="itemId">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">  
+                            </form>
+                            <input type="hidden" value="<%= list._id %>" name="listId">
+                            <input type="hidden" value="<%= item._id %>" name="itemId">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button class="btn danger" type="button" onclick="deleteItem(this)">Delete</button>
+                        </div>
+                    <% } %>
+                </header>
+
+                <% if (item.description) { %>
+                    <div class="card__content">
+                        <i><%= item.description %></i>
+                    </div>
+                <% } %>
+
+
+                <footer class="card__footer">
+                    <small>deadline: <%= new Date(list.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); %>
+                    </small>
+                </footer>
+
+            </article>
+            <% } %>
+        <% } else { %>
+    <h1>
+        No tasks has been added yet...
+    </h1>
+    <% } %>
+</div>
+
+<%
+    function getTextColorStyle(status) {
+        switch (status) {
+            case 'excluded':
+                return 'color: gray;';
+            case 'done':
+                return 'color: green;';
+            case 'active':
+                return 'color: orange;';
+            default:
+                return '';
+        }
+    }
+%>

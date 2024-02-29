@@ -1,0 +1,34 @@
+<% if (sharedLists.length > 0) { %>
+    <div class="grid">
+        <% for (let list of sharedLists) { %> <!-- Change 'lists' to 'sharedLists' here -->
+            <section class="card list">
+                <header class="card__header">
+                    <h1 class="list__title">
+                        <%= list.title %>
+                    </h1>
+                </header>
+        
+                <div class="card__content">
+                    <% if (list.description) { %>
+                        <p>
+                            <i><%= list.description %></i>
+                        </p>
+                    <% } %>
+                    
+                
+                    <%- include('./list-items.ejs', { list, shared: true }) %>
+                </div>
+
+                <footer class="card__footer">
+                    <p>
+                        deadline: <%= list.deadline ? new Date(list.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '-' %>
+                    </p>
+                    <p style="text-align: center;">list created by <b><%= list.author.nick %></b></p>
+                </footer>
+            </section>
+        <% } %>
+    </div>
+<% } else { %>
+    <h3>No shared lists currently...</h1>
+<% } %> %>
+

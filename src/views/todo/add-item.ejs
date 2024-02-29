@@ -1,0 +1,50 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+   <% if (errorMessage) { %>
+        <div class="user-message user-message--error"><%= errorMessage %></div>
+    <% } %>
+   <main>
+        <form class="list-form" action="/todo/item/add" method="POST">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input
+                class="<%= validationErrors.find(e => e.param === 'title') ? 'invalid' : '' %>" 
+                type="text" 
+                name="title" 
+                id="title" 
+                value="<% if (hasError) { %><%= item.title %><% } %>" minlength="3" isRequired>
+            </div>
+            <div class="form-control">
+                <label for="deadline">Deadline</label>
+                <input
+                    class="<%= validationErrors.find(e => e.param === 'deadline') ? 'invalid' : '' %>"
+                    type="date" 
+                    name="deadline" 
+                    id="deadline" 
+                    value="<% if (hasError) { %><%= item.deadline %><% } %>"
+                >
+            </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea
+                    class="<%= validationErrors.find(e => e.param === 'description') ? 'invalid' : '' %>"
+                    name="description" 
+                    id="description" 
+                    rows="2" 
+                    minlength="2" 
+                    maxlength="400">
+                        <% if (hasError) { %><%= item.description %><% } %></textarea>
+            </div>
+            
+            <input type="hidden" value="<%= listId %>" name="listId">
+
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn" type="submit">Add Task</button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>
